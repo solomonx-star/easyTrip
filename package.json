@@ -1,9 +1,12 @@
 {
   "name": "easytripbackend",
   "version": "1.0.0",
-  "main": "backend/index.js",
+  "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
-    "dev": "nodemon backend/index.js"
+    "prod": "node index.js"
   },
   "keywords": [],
   "author": "",
