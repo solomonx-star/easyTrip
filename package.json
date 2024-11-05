@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "backend/index.js",
   "scripts": {
-    "prod": "nodemon backend/index.js"
+    "dev": "nodemon backend/index.js",
+    "vercel-build": "echo hello"
   },
   "keywords": [],
   "author": "",
