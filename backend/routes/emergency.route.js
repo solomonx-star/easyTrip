@@ -6,7 +6,9 @@ import authMiddleware from "../Middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/emergencyContact", authMiddleware, emergencyContact);
+router.use(authMiddleware)
+
+router.post("/emergencyContact", emergencyContact);
 router.get("/getAllEmergencyContact", getAllEmergencyContacts)
 router.put("/emergencyContact/:id", updateEmergencyContacts)
 router.delete("/deleteContact/:id", deleteEmergencyContact)
