@@ -1,3 +1,4 @@
+import { adminPost } from "../models/adminPost.model.js";
 import Booking from "../models/booking.js";
 import { User } from "../models/user.model.js";
 
@@ -53,3 +54,28 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: "Error deleting user", error });
   }
 };
+
+
+export const postRide = async (req, res) => {
+    const { pic, from, to, price } = req.body
+    
+    try {
+        const newAdminPost = new adminPost({
+            pic,
+            from,
+            to,
+            price,
+        });
+
+        const postRide = await newAdminPost.save();
+        if (postRide) {
+            return res.send({
+                status: 200,
+                message: "Ride posted successfully",
+                postRide
+            })
+        }
+    } catch (error) {
+        res.status(500).json({error: "Error posting ride", error: error.message})
+    }
+}
