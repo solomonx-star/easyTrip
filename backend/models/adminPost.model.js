@@ -6,7 +6,7 @@ const adminPostSchema = new mongoose.Schema(
     {
         pic: {
             type: String,
-            required: true
+            // required: true
         },
         from: {
             type: String,
