@@ -1,6 +1,15 @@
 import { adminPost } from "../models/adminPost.model.js";
 import Booking from "../models/booking.js";
 import { User } from "../models/user.model.js";
+import cloudinary from "cloudinary";
+
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Get all bookings
 export const getAllBookings = async (req, res) => {
@@ -43,6 +52,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+
 // Delete a user
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
@@ -55,27 +65,57 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+export const deleteRide = async () => {
+    const { id } = req.params;
+
+    try {
+        const ride = await adminPost.findByIdAndDelete(id);
+        if (!ride) return res.status(404).json({ message: "ride not found" });
+        res.status(200).json({message: "ride deleted"})
+    } catch (error) {
+        res.status();
+    }
+}
+
 
 export const postRide = async (req, res) => {
-    const { pic, from, to, price } = req.body
-    
-    try {
+    const { from, to, price } = req.body;
+    const file = req.file;
+
+  try {
+    // Upload to Cloudinary if `pic` is a base64 string
+    if (!file) {
+      return res.status(400).json({ error: "File not found" });
+    }
+
+    // Upload the image to Cloudinary
+    const uploadResult = cloudinary.v2.uploader
+      .upload_stream({ folder: "ride_images" }, async (error, result) => {
+        if (error) {
+          return res
+            .status(500)
+            .json({ error: "Error uploading image", details: error.message });
+        }
+
+        // Save Cloudinary image URL in your database
         const newAdminPost = new adminPost({
-            pic,
-            from,
-            to,
-            price,
+          pic: result.secure_url,
+          from,
+          to,
+          price,
         });
 
         const postRide = await newAdminPost.save();
-        if (postRide) {
-            return res.send({
-                status: 200,
-                message: "Ride posted successfully",
-                postRide
-            })
-        }
-    } catch (error) {
-        res.status(500).json({error: "Error posting ride", error: error.message})
-    }
-}
+        res.status(200).json({
+          message: "Ride posted successfully",
+          postRide,
+        });
+      })
+      .end(file.buffer); // Stream the file buffer to Cloudinary
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error posting ride", details: error.message });
+  }
+};
+

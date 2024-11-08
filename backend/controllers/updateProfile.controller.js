@@ -1,3 +1,6 @@
+
+import { User } from "../models/user.model.js";
+
 export const updateProfile = async (req, res) => {
   const userId = req.user?.userId;
   const { firstName, lastName, username, gender, dob, city } = req.body;
@@ -21,7 +24,7 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ status: false, message: "User not found" });
     }
 
-    res.status(200).json({ status: true, message: "Profile updated successfully" });
+    res.status(200).json({ status: true, message: "Profile updated successfully", result });
   } catch (error) {
     res.status(500).json({ message: "Error updating profile", error });
   }

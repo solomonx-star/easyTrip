@@ -7,6 +7,7 @@ import cors from "cors";
 import adminRoutes from "./routes/admin.route.js";
 import emergencyRoute from "./routes/emergency.route.js";
 import uploadRoute from "./routes/upload.route.js";
+import updateProfile from "./routes/updateProfile.route.js"
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use("/api/bookings", bookingRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api/emergency", emergencyRoute);
 app.use("/api/upload", uploadRoute);
+app.use("/api/user", updateProfile)
 
 
 

@@ -1,7 +1,12 @@
 import express from "express";
-import upload from "../Middleware/uploadMiddleware.js";
-import { uploadProfilePhoto } from "../controllers/upload.controller.js";
+import { getProfilePhoto, uploadProfilePhoto } from "../controllers/upload.controller.js";
 import authMiddleware from "../Middleware/authMiddleware.js";
+import multer from "multer";
+
+
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const router = express.Router();
 
@@ -11,5 +16,7 @@ router.post(
   upload.single("profilePhoto"),
   uploadProfilePhoto
 );
+
+
 
 export default router;

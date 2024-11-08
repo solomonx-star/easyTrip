@@ -9,6 +9,7 @@ import {
   sendWelcomeEmail,
 } from "../mailtrap/emails.js";
 import { User } from "../models/user.model.js";
+import { adminPost } from "../models/adminPost.model.js";
 
 export const adminSignup = async (req, res) => {
   const { email, password, phoneNumber } = req.body;
@@ -270,4 +271,15 @@ export const checkAuth = async (req, res) => {
     console.log("Error in checkAuth ", error);
     res.status(400).json({ success: false, message: error.message });
   }
+};
+
+
+export const getAllRides = async (req, res) => {
+    try {
+        const rides = await adminPost.find();
+        console.log(rides)
+        res.status(200).json(rides);
+    } catch (error) {
+        res.status(500).json({ status: false, message: "Error getting rides" });
+    }
 };
