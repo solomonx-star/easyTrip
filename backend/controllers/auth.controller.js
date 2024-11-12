@@ -174,7 +174,8 @@ export const login = async (req, res) => {
         id: user._id,
         // token: token,
         role: user.role,
-        username: user.username
+        username: user.username,
+        ProfilePhoto: user.profilePhoto
       },
     });
   } catch (error) {
