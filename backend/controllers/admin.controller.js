@@ -45,7 +45,7 @@ export const getAllUsers = async (req, res) => {
     //   return res.status(403).json({ message: "Access denied" });
     // }
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find({role: "customer"}).select("-password");
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Error retrieving users", error });

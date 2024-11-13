@@ -19,7 +19,7 @@ import multer from "multer";
 const router = express.Router();
 
 // Ensure both authentication and admin role validation for all routes
-// router.use(authMiddleware);
+// router.use(authMiddleware, adminMiddleware);
 
 router.get("/book", getAllBookings); // View all bookings
 router.put("/book/:id", updateBookingStatus); // Update booking status
