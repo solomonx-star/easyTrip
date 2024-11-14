@@ -119,3 +119,13 @@ export const postRide = async (req, res) => {
   }
 };
 
+export const getUserCount = async () => {
+  try {
+    const userCount = await User.countDocuments();
+     res.status(200).json({ count: userCount });
+  } catch (error) {
+    console.error("Error fetching user count:", error);
+    res.status(500).json({ message: "Failed to retrieve user count" });
+  }
+} 
+
