@@ -119,9 +119,9 @@ export const postRide = async (req, res) => {
   }
 };
 
-export const getUserCount = async () => {
+export const getUserCount = async (req, res) => {
   try {
-    const userCount = await User.countDocuments();
+    const userCount = await User.countDocuments({ role: "customer" });
      res.status(200).json({ count: userCount });
   } catch (error) {
     console.error("Error fetching user count:", error);
