@@ -129,3 +129,13 @@ export const getUserCount = async (req, res) => {
   }
 } 
 
+export const getBookingCount = async (req, res) => {
+  try {
+    const bookCount = await Booking.countDocuments();
+    res.status(200).json({ count: bookCount });
+  } catch (error) {
+    console.error("Error fetching user count:", error);
+    res.status(500).json({ message: "Failed to retrieve user count" });
+  }
+}; 
+

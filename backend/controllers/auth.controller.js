@@ -1,5 +1,6 @@
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 import { generateTokenAndSetCookie } from "../utils/generateTokentAndSetCookie.js";
 import {
@@ -168,14 +169,14 @@ export const login = async (req, res) => {
 
     res.status(200).json({
       success: true,
-        message: "Logged in successfully",
+      message: "Logged in successfully",
       token,
       user: {
         id: user._id,
         // token: token,
         role: user.role,
         username: user.username,
-        ProfilePhoto: user.profilePhoto
+        ProfilePhoto: user.profilePhoto,
       },
     });
   } catch (error) {
@@ -276,13 +277,23 @@ export const checkAuth = async (req, res) => {
   }
 };
 
-
 export const getAllRides = async (req, res) => {
-    try {
-        const rides = await adminPost.find();
-        console.log(rides)
-        res.status(200).json(rides);
-    } catch (error) {
-        res.status(500).json({ status: false, message: "Error getting rides" });
-    }
+  try {
+    const rides = await adminPost.find();
+    console.log(rides);
+    res.status(200).json(rides);
+  } catch (error) {
+    res.status(500).json({ status: false, message: "Error getting rides" });
+  }
+};
+
+// pages/api/auth/check.js
+export const checkAuthentication = async (req, res) => {
+  try {
+    return res.status(200).json({
+      message: "user authenticated",
+    });
+  } catch (error) {
+    res.status(500).json({ status: false, message: "user not authenticate" });
+  }
 };
