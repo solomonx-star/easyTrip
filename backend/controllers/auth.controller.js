@@ -59,7 +59,7 @@ export const adminSignup = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  const { email, password, phoneNumber, role, username } = req.body;
+  const { email, password, phoneNumber, role, username, firstName, lastName } = req.body;
 
   try {
     if (!email || !password || !phoneNumber) {
@@ -82,6 +82,8 @@ export const signup = async (req, res) => {
 
     const user = new User({
       role,
+      firstName,
+      lastName,
       username,
       email,
       password: hashedPassword,
