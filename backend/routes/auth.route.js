@@ -4,7 +4,8 @@ import {
   login,
   logout,
   getAllRides,
-  checkAuthentication,
+  checkAuth,
+  getUser,
 } from "../controllers/auth.controller.js";
 import { adminSignup } from "../controllers/auth.controller.js";
 import authMiddleware from "../Middleware/authMiddleware.js";
@@ -17,6 +18,7 @@ router.post("/login", login);
 router.post("/logout", logout);
 router.post("/adminSignup", authMiddleware, adminMiddleware);
 router.get("/user-ride", getAllRides);
-router.post("/authenticate", authMiddleware, checkAuthentication);
+router.post("/authenticate", authMiddleware, checkAuth);
+router.get("/getUser/:userId", authMiddleware, getUser);
 
 export default router;

@@ -3,18 +3,19 @@ import { User } from "../models/user.model.js";
 
 export const updateProfile = async (req, res) => {
   const userId = req.user?.userId;
-  const { firstName, lastName, username, gender, dob, city } = req.body;
+  const { gender, city, country } = req.body;
 
   try {
     const result = await User.updateMany(
       { _id: userId }, // Use a filter to match documents (by `_id` in this case)
       {
         $set: {
-          firstName,
-          lastName,
-          username,
+          // firstName,
+          // lastName,
+          // username,
+          // email,
           gender,
-          dob,
+          country,
           city,
         },
       }

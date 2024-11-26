@@ -6,7 +6,7 @@ export const generateTokenAndSetCookie = (res, user) => {
     { userId: user._id, role: user.role },
     process.env.JWT_SECRET,
     {
-      expiresIn: "7d",
+      expiresIn: "2d",
     }
   );
 

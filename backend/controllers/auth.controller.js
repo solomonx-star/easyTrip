@@ -59,7 +59,8 @@ export const adminSignup = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  const { email, password, phoneNumber, role, username, firstName, lastName } = req.body;
+  const { email, password, phoneNumber, role, username, firstName, lastName } =
+    req.body;
 
   try {
     if (!email || !password || !phoneNumber) {
@@ -173,13 +174,7 @@ export const login = async (req, res) => {
       success: true,
       message: "Logged in successfully",
       token,
-      user: {
-        id: user._id,
-        // token: token,
-        role: user.role,
-        username: user.username,
-        ProfilePhoto: user.profilePhoto,
-      },
+      user,
     });
   } catch (error) {
     console.log("Error in login ", error);
@@ -265,19 +260,34 @@ export const resetPassword = async (req, res) => {
 
 export const checkAuth = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("-password");
+    // Ensure `req.userId` exists (populated by middleware or extracted from JWT)
+    const userId = req.user._id; // Adjust depending on your setup
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    // Find the user in the database, excluding the password
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       return res
-        .status(400)
+        .status(404)
         .json({ success: false, message: "User not found" });
     }
 
+    // Respond with the user information
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.log("Error in checkAuth ", error);
-    res.status(400).json({ success: false, message: error.message });
+    console.error("Error in checkAuth: ", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
   }
 };
+
 
 export const getAllRides = async (req, res) => {
   try {
@@ -292,10 +302,34 @@ export const getAllRides = async (req, res) => {
 // pages/api/auth/check.js
 export const checkAuthentication = async (req, res) => {
   try {
+    // If the token is valid, return success
     return res.status(200).json({
-      message: "user authenticated",
+      status: true,
+      message: "User authenticated",
     });
   } catch (error) {
-    res.status(500).json({ status: false, message: "user not authenticate" });
+    console.error("Authentication check error:", error);
+    return res
+      .status(500)
+      .json({ status: false, message: "Internal server error" });
   }
 };
+
+export const getUser = async (req, res) => {
+  try {
+    // Ensure the user is authenticated
+    const userId  = req.params.userId; // Assume `req.user` contains the authenticated user's details
+
+    // Fetch the user details from the database by ID
+    const user = await User.findById(userId).select("-password"); // Exclude the password
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving user details", error });
+  }
+};
+
