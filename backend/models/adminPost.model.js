@@ -45,6 +45,7 @@ const adminPostSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    availability: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

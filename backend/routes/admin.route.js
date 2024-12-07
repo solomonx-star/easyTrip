@@ -1,15 +1,14 @@
 import express from "express";
 import {
-  getAllBookings,
-  updateBookingStatus,
   getAllUsers,
   deleteUser,
   postRide,
-  getUserCount
+  getUserCount,
+  getAdminPost,
+  deleteAdminPost
 } from "../controllers/admin.controller.js";
 import authMiddleware from "../Middleware/authMiddleware.js";
 import { adminMiddleware } from "../Middleware/adminMiddleware.js";
-import { getAllRides } from "../controllers/auth.controller.js";
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 import multer from "multer";
@@ -23,13 +22,14 @@ const router = express.Router();
 // Ensure both authentication and admin role validation for all routes
 // router.use(authMiddleware, adminMiddleware);
 
-router.get("/book", getAllBookings); // View all bookings
-router.put("/book/:id", updateBookingStatus); // Update booking status
+router.get("/book", getAdminPost); // View all bookings
 router.get("/users", getAllUsers); // View all users
 router.delete("/users/:id", deleteUser);
-router.post("/post-ride", upload.single("pic"), postRide);
+router.delete("/post/:id", deleteAdminPost);
+router.post("/post-ride", postRide);
 router.get("/count", getUserCount);
 
-// Delete a user
+
+//  upload.single("pic"),
 
 export default router;

@@ -3,24 +3,22 @@ import mongoose from "mongoose"
 
 const bookingSchema = new mongoose.Schema(
   {
-    customer: {
+    customerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    pickupLocation: { type: String, required: true },
-    dropoffLocation: { type: String, required: true },
-    fare: { type: Number, required: true },
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "adminPost",
+      required: true,
+    },
     status: {
       type: String,
       enum: ["pending", "confirmed", "completed", "canceled"],
       default: "pending",
     },
-    paymentStatus: {
-      type: String,
-      enum: ["unpaid", "paid"],
-      default: "unpaid",
-    },
+    createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

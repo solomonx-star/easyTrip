@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const emergencySchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  customerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   firstName: {
     type: String,
     required: true,
