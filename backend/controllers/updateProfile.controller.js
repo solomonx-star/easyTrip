@@ -10,10 +10,6 @@ export const updateProfile = async (req, res) => {
       { _id: userId }, // Use a filter to match documents (by `_id` in this case)
       {
         $set: {
-          // firstName,
-          // lastName,
-          // username,
-          // email,
           gender,
           country,
           city,
